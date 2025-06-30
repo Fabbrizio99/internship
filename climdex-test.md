@@ -57,7 +57,7 @@ df_fd <- data.frame(
   value = as.numeric(fd)
 )
 ```
-```{r, eval=F} 
+```{r, eval=T} 
 library(ggplot2)
 ggplot(df_fd, aes(x = factor(year), y = value)) +
   geom_bar(stat = "identity", fill = "green") +
