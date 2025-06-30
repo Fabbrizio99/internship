@@ -67,6 +67,7 @@ ggplot(df_fd, aes(x = factor(year), y = value)) +
     y = "Days"
   )
 ```
+<img src="Rplot.png" width="100%" />
 
 
 
