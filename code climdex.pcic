@@ -1,0 +1,205 @@
+# I had to install the packages from their GitHub site because they are no longer available on CRAN.
+
+install.packages('PCICt')
+install.packages('https://pacificclimate.org/R/climdex.pcic_1.1-11.tar.gz')
+install.packages('ggplot2')
+
+
+
+library(climdex.pcic)
+packageVersion("climdex.pcic")
+library(ggplot2)
+
+
+
+## Parse the dates into PCICt
+tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
+                                                         "jday")]), format="%Y %j", cal="gregorian")
+tmin.dates <- as.PCICt(do.call(paste, ec.1018935.tmin[,c("year",
+                                                         "jday")]), format="%Y %j", cal="gregorian")
+prec.dates <- as.PCICt(do.call(paste, ec.1018935.prec[,c("year",
+                                                         "jday")]), format="%Y %j", cal="gregorian")
+## Load the data in
+ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
+                       ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
+                       tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
+
+
+## 1.Frost days, FD index:annual count of days where daily minimum temperature drops below 0 degrees Celsius
+fd <- climdex.fd(ci)
+
+df_fd <- data.frame(
+  year = as.numeric(names(fd)),
+  value = as.numeric(fd)
+)
+
+ggplot(df_fd, aes(x = factor(year), y = value)) +
+  geom_bar(stat = "identity", fill = "green") +
+  labs(
+    title = "FD: frost days, days where min T < 0",
+    x = "Anno",
+    y = "Days"
+  )
+## 2.Summer days, SU index:annual count of days where daily maximum temperature exceeds 25 degrees Celsius
+su <- climdex.su(ci)
+
+## 3.Icing days, ID index:annual count of days where daily maximum temperature is below 0 degrees Celsius
+id <- climdex.id(ci)
+
+## 4.Tropical nights, TR index:annual count of days where daily minimum temperature stays above 20 degrees Celsius
+tr <- climdex.tr(ci)
+
+## 5.Growing season length, GSL index:the number of days between the start of the first spell of warm days in the first half of the year, 
+#and the start of the first spell of cold days in the second half of the year.
+# spells of warm days: six or more days with mean temperature above 5 degrees Celsius
+# spells of cold days: six or more days with a mean temperature below 5 degrees Celsius
+#There are 3 modes for test purpose only:
+## ’GSL_first’ returns the first growing season found; 
+## ’GSL_max’ returns the longest growing season found;  
+## ’GSL_sum’ returns the total length of all growing seasons found.
+gsl <- climdex.gsl(ci)
+a <- climdex.gsl(ci, gsl.mode = c("GSL", "GSL_first", "GSL_max", "GSL_sum"))
+a
+b <- growing.season.length(ci@data$tavg, ci@date.factors$annual, ci@dates,
+                           ci@northern.hemisphere, gsl.mode="GSL") *
+  ci@namasks$annual$tavg
+b
+
+
+## 6.Monthly maximum of daily maximum temperature, TXx index: 
+# computes the monthly or annual maximum of daily maximum temperature
+txx <- climdex.txx(ci, freq = c("monthly", "annual"))
+
+## 7.Monthly maximum of daily minimum temperature, TNx index:
+# computes the monthly or annual maximum of daily minimum temperature
+tnx <- climdex.tnx(ci, freq = c("monthly", "annual"))
+
+## 8.Monthly minimum of daily maximum temperature, TXn index:
+# computes the monthly or annual minimum of daily maximum temperature
+txn <- climdex.txn(ci, freq = c("monthly", "annual"))
+
+## 9. Monthly minimum value of daily minimum temperature, TNn index:
+# computes the monthly or annual minimum of daily minimum temperature
+tnn <- climdex.tnn(ci, freq = c("monthly", "annual"))
+
+## 10. Percentage of days when TN < 10th percentile, TN10p index:
+# Computation of these values outside of the base period involves comparing the temperature data for
+# each day with the corresponding percentiles for a 5-day running window surrounding that day. The
+# resulting monthly series is then the monthly percentage of values that meet the criteria.
+tn10p <- climdex.tn10p(ci, freq = c("monthly", "annual"))
+
+## 11. Percentage of days when TX < 10th percentile, TX10p index:
+# Computation of these values inside the base period is more complicated. 
+# It involves comparison of the daily temperature data with the corresponding day of temperature data in each of (n - 1) sets of data. 
+# The sets consist of the data for the base period, with the current year replaced with each of the other years. 
+# The results of these comparisons are then averaged to give a value between 0 and 1. 
+# Finally, the resulting daily series is aggregated to a monthly series by averaging these daily values and multiplying by 100 to give a monthly percentile value.
+
+tx10p <- climdex.tx10p(ci, freq = c("monthly", "annual"))
+
+## 12. Percentage of days when TN > 90th percentile, TN90p index:
+# Computation of these values outside of the base period involves comparing the temperature data for each day with the corresponding percentiles for a 5-day running window surrounding that day. 
+# The resulting monthly series is then the monthly percentage of values that meet the criteria.
+
+tn90p <- climdex.tn90p(ci, freq = c("monthly", "annual"))
+
+## 13. TX90p, Percentage of days when TX > 90th percentile:
+
+tx90p <- climdex.tx90p(ci, freq = c("monthly", "annual"))
+
+## 14. WSDI, Warm spell duration index:
+# Annual count of days with at least 6 consecutive days when TX > 90th percentile
+# A "warm spell" is defined as a sequence of 6 or more days in which the daily maximum
+# temperature exceeds the 90th percentile of daily maximum temperature for a 5-day running window
+# surrounding this day during the baseline period
+
+wsdi <- climdex.wsdi(ci, spells.can.span.years = FALSE)
+wsdi
+
+## 15. CSDI, Cold speel duration index: 
+# Annual count of days with at least 6 consecutive days when TN < 10th percentile
+#  A "cold spell" is defined as a sequence of 6 or more days in which the daily minimum
+# temperature is below the 10th percentile of daily minimum temperature for a 5-day running window
+# surrounding this day during the baseline period.
+
+csdi <- climdex.csdi(ci, spells.can.span.years = FALSE)
+
+## 16. DTR, Daily temperature range: 
+# Monthly mean difference between TX and TN
+# This function computes the diurnal temperature range on a monthly basis.
+
+dtr <- climdex.dtr(ci, freq = c("monthly", "annual"))
+
+## 17. Rx1day, Monthly maximum 1-day precipitation:
+# monthly or annual maximum 1-day precipitation
+
+rx1day <- climdex.rx1day(ci, freq = c("monthly", "annual"))
+
+## 18. Rx5day, Monthly maximum consecutive 5-day precipitation:
+# center.mean.on.last.day -->Whether to center the 5-day running mean on the last day of the window, 
+# instead of the center day
+
+rx5day <- climdex.rx5day(ci, freq = c("monthly", "annual"),
+               center.mean.on.last.day = FALSE)
+
+## 19. SDII Simple pricipitation intensity index:
+# the sum of precipitation in wet days (days with preciptitation over 1mm) during the year
+# divided by the number of wet days in the year.
+
+sdii <- climdex.sdii(ci)
+
+## 20. R10mm Annual count of days when PRCP≥ 10mm:
+# annual count of days where daily precipitation is more than 10mm per day
+
+r10mm <- climdex.r10mm(ci)
+
+## 21. R20mm Annual count of days when PRCP≥ 20mm:
+
+r20mm <- climdex.r20mm(ci)
+
+## 22. Rnnmm Annual count of days when PRCP≥ nnmm:
+# nn is a user defined threshold
+# threshold <-- threshold to be used for Rnnmm
+
+rnnmm <- climdex.rnnmm(ci, threshold = 1)
+rnnmm2 <- climdex.rnnmm(ci, threshold = 2)
+
+## 23. CDD. Maximum length of dry spell:
+# spells.can.span.year <-- specifies whether spells can cross year boundaries or not (true=yes)
+
+cdd <- climdex.cdd(ci, spells.can.span.years = TRUE)
+cdd2 <- climdex.cdd(ci, spells.can.span.years = FALSE)
+
+## 24. CWD. Maximum length of wet spell:
+
+cwd <- climdex.cwd(ci, spells.can.span.years = TRUE)
+
+## 25. R95pTOT. Annual total PRCP when RR > 95p
+# the annual sum of precipitation in days where daily precipitation exceeds the 95th percentile of daily
+# precipitation in the base period.
+
+r95ptot <- climdex.r95ptot(ci)
+
+df_r95p <- data.frame(
+  year = as.numeric(names(r95ptot)),
+  value = as.numeric(r95ptot)
+)
+
+ggplot(df_r95p, aes(x = factor(year), y = value)) +
+  geom_bar(stat = "identity", fill = "green") +
+  labs(
+    title = "R95ptot: Precipitazione totale nei giorni > 95° percentile",
+    x = "Anno",
+    y = "mm"
+  )
+
+## 26. R99pTOT. Annual total PRCP when RR > 99p:
+# annual sum of precipitation in days where daily precipitation exceeds the 99th percentile of daily
+# precipitation in the base period.
+
+r99ptot <- climdex.r99ptot(ci)
+
+## 27. PRCPTOT. Annual total precipitation in wet days
+# annual sum of precipitation in wet days (days where precipitation is at least 1mm)
+
+prcptot <- climdex.prcptot(ci)
