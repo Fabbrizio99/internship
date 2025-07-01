@@ -69,7 +69,9 @@ ggplot(df_fd, aes(x = factor(year), y = value)) +
 ```
 <img src="Rplot.png" width="100%" />
 
-
-
-
+### 2.Summer days, SU index:annual count of days where daily maximum temperature exceeds 25 degrees Celsius
+```
+su <- climdex.su(ci)
+```
+<img src="Rplot01.png" width="100%" />
 
