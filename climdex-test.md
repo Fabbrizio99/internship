@@ -150,6 +150,7 @@ summary(dtr)
 Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
   5.945   6.330   6.806   6.818   7.093   8.260      14 
 ```
+This index has been included in this section because it belongs to this category, despite the order.
 
 ## Extreme heat and cold indices
 ### 6. Monthly maximum of daily maximum temperature, TXx index 
@@ -295,10 +296,13 @@ summary(rx1day)
 <img src="Rplot10.png" width="100%" />
 
 ### 18. Rx5day, Monthly maximum consecutive 5-day precipitation:
-center.mean.on.last.day --> Whether to center the 5-day running mean on the last day of the window, instead of the center day
+
 ```
 rx5day <- climdex.rx5day(ci, freq = c( "annual"),
                center.mean.on.last.day = FALSE)
+#center.mean.on.last.day --> Whether to center the 5-day running mean on the last day of the window, instead of the center day
+```
+```
 summary(rx1day)
 #Output:
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
@@ -306,8 +310,8 @@ summary(rx1day)
 ```
 
 ## Rainfall duration or frequency indices
-### 19. SDII Simple pricipitation intensity index:
-the sum of precipitation in wet days (days with preciptitation over 1mm) during the year
+### 19. SDII Simple precipitation intensity index:
+The sum of precipitation in wet days (days with precipitation over 1mm) during the year
 divided by the number of wet days in the year.
 ```
 sdii <- climdex.sdii(ci)
@@ -319,7 +323,7 @@ summary(sdii)
 <img src="Rplot11.png" width="100%" />
 
 ### 20. R10mm Annual count of days when PRCP≥ 10mm:
-annual count of days where daily precipitation is more than 10mm per day
+Annual count of days where daily precipitation is more than 10mm per day
 ```
 r10mm <- climdex.r10mm(ci)
 summary(r10mm)
@@ -343,10 +347,17 @@ threshold <-- threshold to be used for Rnnmm
 ```
 rnnmm <- climdex.rnnmm(ci, threshold = 1)
 rnnmm2 <- climdex.rnnmm(ci, threshold = 2)
+```
+```
 summary(rnnmm)
 #Output:
 Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
   106.0   114.8   128.5   131.6   147.0   177.0      18
+
+summary(rnnmm2)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  84.00   90.75  102.50  103.82  114.25  135.00      18
 ```
 
 ### 23. CDD: Maximum length of dry spell:
@@ -355,10 +366,18 @@ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
 cdd <- climdex.cdd(ci, spells.can.span.years = TRUE)
 cdd2 <- climdex.cdd(ci, spells.can.span.years = FALSE)
 # spells.can.span.year <-- specifies whether spells can cross year boundaries or not (true=yes)
+```
+```
 summary(cdd)
 #Output:
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
   15.00   24.00   33.00   33.57   41.25   59.00      18
+
+summary(cdd2)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  15.00   24.00   33.00   33.57   41.25   59.00      18
+# No differencies
 ```
 
 ### 24. CWD: Maximum length of wet spell:
@@ -372,7 +391,7 @@ summary(cwd)
 
 ## Precipitation indices: quantity
 ### 25. R95pTOT: Annual total PRCP when RR > 95p
-the annual sum of precipitation in days where daily precipitation exceeds the 95th percentile of daily precipitation in the base period.
+The annual sum of precipitation in days where daily precipitation exceeds the 95th percentile of daily precipitation in the base period.
 ```
 r95ptot <- climdex.r95ptot(ci)
 summary(r95ptot)
@@ -383,7 +402,7 @@ summary(r95ptot)
 <img src="Rplot12.png" width="100%" />
 
 ### 26. R99pTOT: Annual total PRCP when RR > 99p:
-Annual sum of precipitation in days where daily precipitation exceeds the 99th percentile of daily precipitation in the base period.
+The annual sum of precipitation in days where daily precipitation exceeds the 99th percentile of daily precipitation in the base period.
 ```
 r99ptot <- climdex.r99ptot(ci)
 summary(r99ptot)
