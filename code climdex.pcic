@@ -68,25 +68,25 @@ b
 
 ## 6.Monthly maximum of daily maximum temperature, TXx index: 
 # computes the monthly or annual maximum of daily maximum temperature
-txx <- climdex.txx(ci, freq = c("monthly", "annual"))
+txx <- climdex.txx(ci, freq = c("annual"))
 
 ## 7.Monthly maximum of daily minimum temperature, TNx index:
 # computes the monthly or annual maximum of daily minimum temperature
-tnx <- climdex.tnx(ci, freq = c("monthly", "annual"))
+tnx <- climdex.tnx(ci, freq = c("annual"))
 
 ## 8.Monthly minimum of daily maximum temperature, TXn index:
 # computes the monthly or annual minimum of daily maximum temperature
-txn <- climdex.txn(ci, freq = c("monthly", "annual"))
+txn <- climdex.txn(ci, freq = c("annual"))
 
 ## 9. Monthly minimum value of daily minimum temperature, TNn index:
 # computes the monthly or annual minimum of daily minimum temperature
-tnn <- climdex.tnn(ci, freq = c("monthly", "annual"))
+tnn <- climdex.tnn(ci, freq = c("annual"))
 
 ## 10. Percentage of days when TN < 10th percentile, TN10p index:
 # Computation of these values outside of the base period involves comparing the temperature data for
 # each day with the corresponding percentiles for a 5-day running window surrounding that day. The
 # resulting monthly series is then the monthly percentage of values that meet the criteria.
-tn10p <- climdex.tn10p(ci, freq = c("monthly", "annual"))
+tn10p <- climdex.tn10p(ci, freq = c(, "annual"))
 
 ## 11. Percentage of days when TX < 10th percentile, TX10p index:
 # Computation of these values inside the base period is more complicated. 
@@ -95,17 +95,17 @@ tn10p <- climdex.tn10p(ci, freq = c("monthly", "annual"))
 # The results of these comparisons are then averaged to give a value between 0 and 1. 
 # Finally, the resulting daily series is aggregated to a monthly series by averaging these daily values and multiplying by 100 to give a monthly percentile value.
 
-tx10p <- climdex.tx10p(ci, freq = c("monthly", "annual"))
+tx10p <- climdex.tx10p(ci, freq = c("annual"))
 
 ## 12. Percentage of days when TN > 90th percentile, TN90p index:
 # Computation of these values outside of the base period involves comparing the temperature data for each day with the corresponding percentiles for a 5-day running window surrounding that day. 
 # The resulting monthly series is then the monthly percentage of values that meet the criteria.
 
-tn90p <- climdex.tn90p(ci, freq = c("monthly", "annual"))
+tn90p <- climdex.tn90p(ci, freq = c("annual"))
 
 ## 13. TX90p, Percentage of days when TX > 90th percentile:
 
-tx90p <- climdex.tx90p(ci, freq = c("monthly", "annual"))
+tx90p <- climdex.tx90p(ci, freq = c("annual"))
 
 ## 14. WSDI, Warm spell duration index:
 # Annual count of days with at least 6 consecutive days when TX > 90th percentile
@@ -116,7 +116,7 @@ tx90p <- climdex.tx90p(ci, freq = c("monthly", "annual"))
 wsdi <- climdex.wsdi(ci, spells.can.span.years = FALSE)
 wsdi
 
-## 15. CSDI, Cold speel duration index: 
+## 15. CSDI, Cold spell duration index: 
 # Annual count of days with at least 6 consecutive days when TN < 10th percentile
 #  A "cold spell" is defined as a sequence of 6 or more days in which the daily minimum
 # temperature is below the 10th percentile of daily minimum temperature for a 5-day running window
