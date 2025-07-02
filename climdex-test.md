@@ -271,18 +271,20 @@ cwd <- climdex.cwd(ci, spells.can.span.years = TRUE)
 ```
 
 ## Precipitation indices: quantity
-### 25. R95pTOT. Annual total PRCP when RR > 95p
+### 25. R95pTOT: Annual total PRCP when RR > 95p
 the annual sum of precipitation in days where daily precipitation exceeds the 95th percentile of daily precipitation in the base period.
 ```
 r95ptot <- climdex.r95ptot(ci)
 ```
 <img src="Rplot12.png" width="100%" />
-### 26. R99pTOT. Annual total PRCP when RR > 99p:
+
+### 26. R99pTOT: Annual total PRCP when RR > 99p:
 Annual sum of precipitation in days where daily precipitation exceeds the 99th percentile of daily precipitation in the base period.
 ```
 r99ptot <- climdex.r99ptot(ci)
 ```
-### 27. PRCPTOT. Annual total precipitation in wet days
+
+### 27. PRCPTOT: Annual total precipitation in wet days
 Annual sum of precipitation in wet days (days where precipitation is at least 1mm)
 ```
 prcptot <- climdex.prcptot(ci)
