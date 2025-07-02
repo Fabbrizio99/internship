@@ -1,7 +1,7 @@
 ---
 title: "Climdex.pcic Package"
 author: "Mattia Fabris"
-date: "2025-05-21"
+date: "2025-07-02"
 output: html_document
 ---
 
@@ -61,6 +61,12 @@ df_fd <- data.frame(
   value = as.numeric(fd)
 )
 ```
+```
+summary(fd)
+#Output:
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   0.00    7.50   13.00   13.88   19.00   44.00      14 
+```
 ```{r, eval=T} 
 library(ggplot2)
 ggplot(df_fd, aes(x = factor(year), y = value)) +
@@ -78,6 +84,10 @@ ggplot(df_fd, aes(x = factor(year), y = value)) +
 Annual count of days where daily maximum temperature exceeds 25 degrees Celsius
 ```
 su <- climdex.su(ci)
+summary(su)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  1.000   3.750   5.000   6.062   8.000  15.000      14 
 ```
 <img src="Rplot01.png" width="100%" />
 
@@ -86,6 +96,10 @@ su <- climdex.su(ci)
 Annual count of days where daily maximum temperature is below 0 degrees Celsius
 ```
 id <- climdex.id(ci)
+summary(id)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.000   0.000   0.000   1.812   3.250  10.000      14 
 ```
 <img src="Rplot02.png" width="100%" />
 
@@ -94,6 +108,10 @@ id <- climdex.id(ci)
 Annual count of days where daily minimum temperature stays above 20 degrees Celsius
 ```
 tr <- climdex.tr(ci)
+summary(tr)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+      0       0       0       0       0       0      14 
 ```
 ## Indices derived from combined temperature/precipitation
 ### 5. Growing season length, GSL index
@@ -114,6 +132,12 @@ b <- growing.season.length(ci@data$tavg, ci@date.factors$annual, ci@dates,
                            ci@northern.hemisphere, gsl.mode="GSL") *
   ci@namasks$annual$tavg
 ```
+```
+summary(gsl)
+# Output
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  269.0   313.8   329.5   324.9   341.8   362.0      14
+```
 <img src="Rplot3.png" width="100%" />
 
 ### 16. DTR, Daily temperature range: Monthly mean difference between TX and TN
@@ -121,6 +145,10 @@ b <- growing.season.length(ci@data$tavg, ci@date.factors$annual, ci@dates,
 This function computes the diurnal temperature range on a monthly basis.
 ```
 dtr <- climdex.dtr(ci, freq = c("annual"))
+summary(dtr)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  5.945   6.330   6.806   6.818   7.093   8.260      14 
 ```
 
 ## Extreme heat and cold indices
@@ -131,6 +159,10 @@ Computes the monthly or annual maximum of daily maximum temperature.
 In this case, I decided to compute only annual data for simplicity. To enter monthly data, simply indicate ‘monthly’ in brackets in the frequency field.
 ```
 txx <- climdex.txx(ci, freq = c("annual"))
+summary(txx)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   8.00   13.00   17.80   18.36   23.35   31.10      40 
 ```
 <img src="Rplot04.png" width="100%" />
 
@@ -139,6 +171,10 @@ txx <- climdex.txx(ci, freq = c("annual"))
 Computes the monthly or annual maximum of daily minimum temperature
 ```
 tnx <- climdex.tnx(ci, freq = c("annual"))
+summary(tnx)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  12.20   13.45   14.50   14.53   15.12   17.50      14
 ```
 <img src="Rplot05.png" width="100%" />
 
@@ -146,6 +182,10 @@ tnx <- climdex.tnx(ci, freq = c("annual"))
 Computes the monthly or annual minimum of daily maximum temperature
 ```
 txn <- climdex.txn(ci, freq = c("annual"))
+summary(txn)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-9.4000 -2.9750  0.2500 -0.7312  2.2000  5.0000      14 
 ```
 <img src="Rplot06.png" width="100%" />
 
@@ -153,6 +193,10 @@ txn <- climdex.txn(ci, freq = c("annual"))
 Computes the monthly or annual minimum of daily minimum temperature
 ```
 tnn <- climdex.tnn(ci, freq = c("annual"))
+summary(tnn)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-13.900  -7.700  -4.750  -5.172  -3.175   0.000      14
 ```
 <img src="Rplot07.png" width="100%" />
 
@@ -165,6 +209,10 @@ each day with the corresponding percentiles for a 5-day running window surroundi
 resulting monthly series is then the monthly percentage of values that meet the criteria.
 ```
 tn10p <- climdex.tn10p(ci, freq = c("annual"))
+summary(tn10p)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.5479  3.8781  6.9384  9.2091 12.9452 30.9120      14
 ```
 <img src="Rplot08.png" width="100%" />
 
@@ -178,6 +226,10 @@ Finally, the resulting daily series is aggregated to a monthly series by averagi
 
 ```
 tx10p <- climdex.tx10p(ci, freq = c("annual"))
+summary(tx10p)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.000   0.000   6.667  10.321  15.934  64.516      40
 ```
 
 ### 12. Percentage of days when TN > 90th percentile, TN90p index:
@@ -186,12 +238,20 @@ The resulting monthly series is then the monthly percentage of values that meet 
 
 ```
 tn90p <- climdex.tn90p(ci, freq = c("annual"))
+summary(tn90p)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.000   0.000   3.571   8.488  12.903  57.620      37
 ```
 
 ### 13. TX90p, Percentage of days when TX > 90th percentile:
 
 ```
 tx90p <- climdex.tx90p(ci, freq = c("annual"))
+summary(tx90p)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.000   3.115   6.452   9.739  16.129  48.387      40
 ```
 
 ## Duration or frequency indices
@@ -203,16 +263,23 @@ surrounding this day during the baseline period
 
 ```
 wsdi <- climdex.wsdi(ci, spells.can.span.years = FALSE)
+summary(wsdi)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.000   0.000   0.000   1.156   0.000  12.000      14
 ```
 <img src="Rplot09.png" width="100%" />
 
 ### 15. CSDI, Cold spell duration index: 
 Annual count of days with at least 6 consecutive days when TN < 10th percentile
-A "cold spell" is defined as a sequence of 6 or more days in which the daily minimum
-temperature is below the 10th percentile of daily minimum temperature for a 5-day running window
+A "cold spell" is defined as a sequence of 6 or more days in which the daily minimum temperature is below the 10th percentile of daily minimum temperature for a 5-day running window
 surrounding this day during the baseline period.
 ```
 csdi <- climdex.csdi(ci, spells.can.span.years = FALSE)
+summary(csdi)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.000   0.000   0.000   4.438   0.000  71.000      14
 ```
 
 ## Precipitation indices: quantity
@@ -220,6 +287,10 @@ csdi <- climdex.csdi(ci, spells.can.span.years = FALSE)
 Monthly or annual maximum 1-day precipitation
 ```
 rx1day <- climdex.rx1day(ci, freq = c("annual"))
+summary(rx1day)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  24.90   36.00   48.80   50.62   59.15   91.60      18
 ```
 <img src="Rplot10.png" width="100%" />
 
@@ -228,6 +299,10 @@ center.mean.on.last.day --> Whether to center the 5-day running mean on the last
 ```
 rx5day <- climdex.rx5day(ci, freq = c( "annual"),
                center.mean.on.last.day = FALSE)
+summary(rx1day)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  24.90   36.00   48.80   50.62   59.15   91.60      18
 ```
 
 ## Rainfall duration or frequency indices
@@ -236,6 +311,10 @@ the sum of precipitation in wet days (days with preciptitation over 1mm) during 
 divided by the number of wet days in the year.
 ```
 sdii <- climdex.sdii(ci)
+summary(sdii)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  4.683   6.169   7.249   7.078   7.671   9.232      18
 ```
 <img src="Rplot11.png" width="100%" />
 
@@ -243,11 +322,19 @@ sdii <- climdex.sdii(ci)
 annual count of days where daily precipitation is more than 10mm per day
 ```
 r10mm <- climdex.r10mm(ci)
+summary(r10mm)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  15.00   22.00   26.00   27.25   33.00   44.00      18
 ```
 
 ### 21. R20mm Annual count of days when PRCP≥ 20mm:
 ```
 r20mm <- climdex.r20mm(ci)
+summary(r20mm)
+#Output
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  2.000   6.750   8.000   8.179  11.000  14.000      18
 ```
 
 ### 22. Rnnmm Annual count of days when PRCP≥ nnmm:
@@ -256,18 +343,31 @@ threshold <-- threshold to be used for Rnnmm
 ```
 rnnmm <- climdex.rnnmm(ci, threshold = 1)
 rnnmm2 <- climdex.rnnmm(ci, threshold = 2)
+summary(rnnmm)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  106.0   114.8   128.5   131.6   147.0   177.0      18
 ```
 
 ### 23. CDD: Maximum length of dry spell:
-spells.can.span.year <-- specifies whether spells can cross year boundaries or not (true=yes)
+
 ```
 cdd <- climdex.cdd(ci, spells.can.span.years = TRUE)
 cdd2 <- climdex.cdd(ci, spells.can.span.years = FALSE)
+# spells.can.span.year <-- specifies whether spells can cross year boundaries or not (true=yes)
+summary(cdd)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  15.00   24.00   33.00   33.57   41.25   59.00      18
 ```
 
 ### 24. CWD: Maximum length of wet spell:
 ```
 cwd <- climdex.cwd(ci, spells.can.span.years = TRUE)
+summary(cwd)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   6.00    9.75   12.50   12.54   14.00   27.00      18
 ```
 
 ## Precipitation indices: quantity
@@ -275,6 +375,10 @@ cwd <- climdex.cwd(ci, spells.can.span.years = TRUE)
 the annual sum of precipitation in days where daily precipitation exceeds the 95th percentile of daily precipitation in the base period.
 ```
 r95ptot <- climdex.r95ptot(ci)
+summary(r95ptot)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   50.8   139.8   218.4   224.0   308.3   423.8      18 
 ```
 <img src="Rplot12.png" width="100%" />
 
@@ -282,10 +386,18 @@ r95ptot <- climdex.r95ptot(ci)
 Annual sum of precipitation in days where daily precipitation exceeds the 99th percentile of daily precipitation in the base period.
 ```
 r99ptot <- climdex.r99ptot(ci)
+summary(r99ptot)
+#Output
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   0.00    0.00   51.40   69.42  105.65  282.60      18 
 ```
 
 ### 27. PRCPTOT: Annual total precipitation in wet days
 Annual sum of precipitation in wet days (days where precipitation is at least 1mm)
 ```
 prcptot <- climdex.prcptot(ci)
+summary(prcptot)
+#Output:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  585.4   790.8   910.5   930.9  1083.8  1292.5      18
 ```
