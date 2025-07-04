@@ -45,7 +45,7 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ``` 
 
 
-## Compute the indeces
+## Compute the indices
 
 I divided indices into different categories, which can be represented with the same graphs. 
 
@@ -140,17 +140,6 @@ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
 ```
 <img src="Rplot3.png" width="100%" />
 
-### 16. DTR, Daily temperature range: Monthly mean difference between TX and TN
-
-This function computes the diurnal temperature range on a monthly basis.
-```
-dtr <- climdex.dtr(ci, freq = c("annual"))
-summary(dtr)
-#Output:
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-  5.945   6.330   6.806   6.818   7.093   8.260      14 
-```
-This index has been included in this section because it belongs to this category, despite the order.
 
 ## Extreme heat and cold indices
 ### 6. Monthly maximum of daily maximum temperature, TXx index 
@@ -281,6 +270,17 @@ summary(csdi)
 #Output:
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
   0.000   0.000   0.000   4.438   0.000  71.000      14
+```
+
+### 16. DTR, Daily temperature range: Monthly mean difference between TX and TN
+
+This function computes the diurnal temperature range on a monthly basis.
+```
+dtr <- climdex.dtr(ci, freq = c("annual"))
+summary(dtr)
+#Output:
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  5.945   6.330   6.806   6.818   7.093   8.260      14 
 ```
 
 ## Precipitation indices: quantity
